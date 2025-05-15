@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'git-cred', url: 'https://github.com/Farisvtp/py-project-terraform.git'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                 script {
+                   withDockerRegistry(credentialsId: 'docker-pwd', toolName: 'docker') {
+                            sh "docker build -t faris7/flask-app ."
+                    }
+               }
+            }
+        }
+        
+        stage('Docker Login') {
+            steps {
+                script {
+                   withDockerRegistry(credentialsId: 'docker-pwd', toolName: 'docker') {
+                            sh "docker push faris7/flask-app:latest"
+                    }
+               }
+            }
+        }
+        
+        stage('Deploy to AWS using Terraform') {
+            steps {
+                dir('terraform'){
+                    withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-key', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'), aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-key', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                     sh '''
+                            chmod 400 mumbainew.pem
+                            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+                            terraform init
+                            terraform apply -auto-approve
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}
