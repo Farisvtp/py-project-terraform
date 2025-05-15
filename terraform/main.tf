@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_instance" "flask_app" {
   ami             = "ami-0f5ee92e2d63afc18" # Ubuntu 22.04 LTS
   instance_type   = "t2.micro"
-  key_name        = mumbainew
+  key_name        = "mumbainew"
   vpc_security_group_ids = ["sg-03c336cea0369f7ab"]
 
   tags = {
