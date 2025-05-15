@@ -3,5 +3,5 @@ variable "key_name" {
 }
 
 variable "existing_sg_name" {
-  default     = "my-security"  
+  "sg-03c336cea0369f7ab"  
 }
