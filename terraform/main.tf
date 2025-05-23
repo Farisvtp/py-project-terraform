@@ -3,10 +3,10 @@ provider "aws" {
 }
 
 resource "aws_instance" "flask_app" {
-  ami             = "ami-0f5ee92e2d63afc18" # Ubuntu 22.04 LTS
+  ami             = "ami-0e35ddab05955cf57" 
   instance_type   = "t2.micro"
-  key_name        = "mumbainew"
-  vpc_security_group_ids = ["sg-03c336cea0369f7ab"]
+  key_name        = "mumbaikey"
+  vpc_security_group_ids = ["sg-01642b57859c1bc69"]
 
   tags = {
     Name = "FlaskAppServer"
@@ -24,7 +24,7 @@ resource "aws_instance" "flask_app" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("./mumbainew.pem")  
+      private_key = file("./mumbaikey.pem")  
       host        = self.public_ip
     }
   }
