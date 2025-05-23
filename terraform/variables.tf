@@ -1,7 +1,7 @@
 variable "key_name" {
-  default     = "mumbainew.pem"  
+  default     = "mumbaikey.pem"  
 }
 
 variable "existing_sg_name" {
-  default = "sg-03c336cea0369f7ab"  
+  default = "sg-01642b57859c1bc69"  
 }
